@@ -75,23 +75,23 @@ var isAnagram = function (s, t) {
 - Time Complexity: `O(n)`
 - Space Complexity: `O(1)`
 
-**Solution 3: Hash Table**
+**Solution 3: Array hash**
 
-> Create a hash table and store the values in it.
+> Create an array with 26 element of 0, then increment and decrement the value of the element of the array corresponding to the character of the string.
 
 ```js
-var containsDuplicate = function (nums) {
-  const hashTable = {};
-  for (let i = 0; i < nums.length; i++) {
-    if (!hashTable[nums[i]]) {
-      hashTable[nums[i]] = 1;
-    } else {
-      return true;
-    }
+var isAnagram = function (s, t) {
+  if (s.length !== t.length) {
+    return false;
   }
-  return false;
+  const count = new Array(26).fill(0);
+  for (let i = 0; i < s.length; i++) {
+    count[s.charCodeAt(i) - "a".charCodeAt(0)]++;
+    count[t.charCodeAt(i) - "a".charCodeAt(0)]--;
+  }
+  return count.every((val) => val === 0);
 };
 ```
 
 - Time Complexity: `O(n)`
-- Space Complexity: `O(n)`
+- Space Complexity: `O(1)`
