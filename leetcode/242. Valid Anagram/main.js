@@ -31,6 +31,7 @@ var isAnagram = function (s, t) {
   //   }
   // }
   // return true;
+
   // Solution 1 (compare after sort): Time Complexity: O(n log n + m log m) | Space Complexity: O(1)
   // if (s.length !== t.length) {
   //   return false;
