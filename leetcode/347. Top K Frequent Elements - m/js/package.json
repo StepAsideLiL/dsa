@@ -4,7 +4,9 @@
   "description": "",
   "main": "main.js",
   "scripts": {
-    "start": "node main.js"
+    "start": "node main.js",
+    "s1": "node sol1.js",
+    "s2": "node sol2.js"
   },
   "keywords": [],
   "author": "",
