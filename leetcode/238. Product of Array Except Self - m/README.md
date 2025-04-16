@@ -52,3 +52,41 @@ var productExceptSelf = function (nums) {
 
 - Time Complexity: `O(n^2)`
 - Space Complexity: `O(1)`
+
+**Solution 2: Product Division**
+
+> Get the product of all element in `nums`. The divide the product by each element in `nums` if the element is not zero.
+
+```js
+var productExceptSelf = function (nums) {
+  let prod = 1;
+  let zeroCount = 0;
+
+  for (let num of nums) {
+    if (num !== 0) {
+      prod *= num;
+    } else {
+      zeroCount++;
+    }
+  }
+
+  if (zeroCount > 1) {
+    return Array(nums.length).fill(0);
+  }
+
+  const answer = new Array(nums.length);
+
+  for (let i = 0; i < nums.length; i++) {
+    if (zeroCount > 0) {
+      answer[i] = nums[i] === 0 ? prod : 0;
+    } else {
+      answer[i] = prod / nums[i];
+    }
+  }
+
+  return answer;
+};
+```
+
+- Time Complexity: `O(n)`
+- Space Complexity: for extra space `O(1)` | for output array `O(n)`
