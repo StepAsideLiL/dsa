@@ -25,3 +25,30 @@ You must write an algorithm that runs in `O(n)` time and without using the divis
 - The input is generated such that `answer[i]` is **guaranteed** to fit in a **32-bit** integer.
 
 **Follow up:** Can you solve the problem in `O(1)` extra space complexity? (The output array **does not** count as extra space for space complexity analysis.)
+
+---
+
+### Solutions are in JavaScript
+
+**Solution 1: Brute Force**
+
+```js
+var productExceptSelf = function (nums) {
+  const answer = [];
+
+  for (let i = 0; i < nums.length; i++) {
+    let product = 1;
+    for (let j = 0; j < nums.length; j++) {
+      if (i !== j) {
+        product = product * nums[j];
+      }
+    }
+    answer.push(product);
+  }
+
+  return answer;
+};
+```
+
+- Time Complexity: `O(n^2)`
+- Space Complexity: `O(1)`
