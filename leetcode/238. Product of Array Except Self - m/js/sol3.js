@@ -3,7 +3,7 @@
  * @return {number[]}
  */
 var productExceptSelf = function (nums) {
-  // Solution 3 (): Time Complexity: O(n), Space Complexity: O(1)
+  // Solution 3 (prefix and suffix): Time Complexity: O(n), Space Complexity: O(1)
   const n = nums.length;
   const answer = new Array(n);
   const pref = new Array(n);

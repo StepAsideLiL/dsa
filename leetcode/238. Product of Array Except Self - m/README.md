@@ -90,3 +90,34 @@ var productExceptSelf = function (nums) {
 
 - Time Complexity: `O(n)`
 - Space Complexity: for extra space `O(1)` | for output array `O(n)`
+
+**Solution 3: Prefix and Suffix**
+
+```js
+var productExceptSelf = function (nums) {
+  const n = nums.length;
+  const answer = new Array(n);
+  const pref = new Array(n);
+  const suff = new Array(n);
+
+  pref[0] = 1;
+  suff[n - 1] = 1;
+
+  for (let i = 1; i < n; i++) {
+    pref[i] = nums[i - 1] * pref[i - 1];
+  }
+
+  for (let i = n - 2; i >= 0; i--) {
+    suff[i] = nums[i + 1] * suff[i + 1];
+  }
+
+  for (let i = 0; i < n; i++) {
+    answer[i] = pref[i] * suff[i];
+  }
+
+  return answer;
+};
+```
+
+- Time Complexity: `O(n)`
+- Space Complexity: for extra space `O(1)` | for output array `O(n)`
