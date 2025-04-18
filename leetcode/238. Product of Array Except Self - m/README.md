@@ -121,3 +121,27 @@ var productExceptSelf = function (nums) {
 
 - Time Complexity: `O(n)`
 - Space Complexity: for extra space `O(1)` | for output array `O(n)`
+
+**Solution 4: Postfix**
+
+```js
+var productExceptSelf = function (nums) {
+  const n = nums.length;
+  const answer = new Array(n).fill(1);
+
+  for (let i = 1; i < n; i++) {
+    answer[i] = nums[i - 1] * answer[i - 1];
+  }
+
+  let postfix = 1;
+  for (let i = n - 1; i >= 0; i--) {
+    answer[i] *= postfix;
+    postfix *= nums[i];
+  }
+
+  return answer;
+};
+```
+
+- Time Complexity: `O(n)`
+- Space Complexity: for extra space `O(1)` | for output array `O(n)`
