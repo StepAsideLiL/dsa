@@ -49,3 +49,69 @@ Determine if a `9 x 9` Sudoku board is valid. Only the filled cells need to be v
 - `board.length == 9`
 - `board[i].length == 9`
 - `board[i][j]` is a digit `1-9` or `'.'`.
+
+---
+
+### Solutions are in JavaScript
+
+**Solution 1: Brute Force**
+
+> check every cell to see if it fulfills the validation rules.
+
+```js
+var isValidSudoku = function (board) {
+  for (let row = 0; row < 9; row++) {
+    let seen = new Set();
+    for (let col = 0; col < 9; col++) {
+      if (board[row][col] === ".") {
+        continue;
+      }
+
+      if (seen.has(board[row][col])) {
+        return false;
+      }
+
+      seen.add(board[row][col]);
+    }
+  }
+
+  for (let col = 0; col < 9; col++) {
+    let seen = new Set();
+    for (let row = 0; row < 9; row++) {
+      if (board[row][col] === ".") {
+        continue;
+      }
+
+      if (seen.has(board[row][col])) {
+        return false;
+      }
+
+      seen.add(board[row][col]);
+    }
+  }
+
+  for (let square = 0; square < 9; square++) {
+    let seen = new Set();
+    for (let i = 0; i < 3; i++) {
+      for (let j = 0; j < 3; j++) {
+        let row = Math.floor(square / 3) * 3 + i;
+        let col = (square % 3) * 3 + j;
+        if (board[row][col] === ".") {
+          continue;
+        }
+
+        if (seen.has(board[row][col])) {
+          return false;
+        }
+
+        seen.add(board[row][col]);
+      }
+    }
+  }
+
+  return true;
+};
+```
+
+- Time Complexity: `O(n^2)`
+- Space Complexity: `O(n^2)`
