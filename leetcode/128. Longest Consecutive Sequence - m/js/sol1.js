@@ -3,6 +3,7 @@
  * @return {number}
  */
 var longestConsecutive = function (nums) {
+  // Solution 1 (sort and set): Time Complexity: O(n log n) | Space Complexity: O(n)
   const sorted = nums.sort((a, b) => a - b);
   const newNums = new Set(sorted);
 
