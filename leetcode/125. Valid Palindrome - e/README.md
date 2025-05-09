@@ -34,3 +34,28 @@ Given a string `s`, return `true` _if it is a **palindrome**_, _or_ `false` _oth
 
 - `1 <= s.length <= 2 * 10^5`
 - `s` consists only of printable ASCII characters.
+
+---
+
+### Solutions are in JavaScript
+
+**Solution 1: Replace and Match**
+
+> Replace all non-alphanumeric characters with an empty string and then check if the string is equal to its reverse.
+
+```js
+var isPalindrome = function (s) {
+  let str = s.toLowerCase().replace(/[^a-z0-9]/g, "");
+
+  for (let i = 0; i < str.length; i++) {
+    if (str[i] !== str[str.length - 1 - i]) {
+      return false;
+    }
+  }
+
+  return true;
+};
+```
+
+- Time Complexity: `O(n)`
+- Space Complexity: `O(n)`
