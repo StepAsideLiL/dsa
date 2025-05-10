@@ -39,3 +39,28 @@ Your solution must use only constant extra space.
 - ~numbers~ is sorted in non-decreasing order.
 - `-1000 <= target <= 1000`
 - The tests are generated such that there is **exactly one solution**.
+
+---
+
+### Solutions are in JavaScript
+
+**Solution 1: Brute Force checking**
+
+> Checking all the elements in the array with each other using nested for loops.
+
+```js
+var twoSum = function (numbers, target) {
+  // Solution 1 (Brute Force): Time Complexity: O(n^2), Space Complexity: O(n)
+  for (let i = 0; i < numbers.length; i++) {
+    for (let j = i + 1; j < numbers.length; j++) {
+      if (numbers[i] + numbers[j] === target) {
+        return [i + 1, j + 1];
+      }
+    }
+  }
+  return [];
+};
+```
+
+- Time Complexity: `O(n^2)`
+- Space Complexity: `O(n)`
