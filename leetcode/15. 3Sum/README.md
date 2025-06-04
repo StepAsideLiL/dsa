@@ -42,3 +42,44 @@ Notice that the solution set must not contain duplicate triplets.
 
 - `3 <= nums.length <= 3000`
 - `-10^5 <= nums[i] <= 10^5`
+
+---
+
+### Solutions are in JavaScript
+
+**Solution 1: (Brute force)**
+
+> [!NOTE]
+>
+> This solution hit _Time Limit Exceeded_.
+
+```js
+var threeSum = function (nums) {
+  if (nums.length < 3) return [];
+
+  const result = {};
+  nums.sort((a, b) => a - b);
+
+  for (let i = 0; i < nums.length; i++) {
+    for (let j = i + 1; j < nums.length; j++) {
+      for (let k = j + 1; k < nums.length; k++) {
+        if (
+          nums[i] + nums[j] + nums[k] === 0 &&
+          !result[`${nums[i]}-${nums[j]}-${nums[k]}`]
+        ) {
+          result[`${nums[i]}-${nums[j]}-${nums[k]}`] = [
+            nums[i],
+            nums[j],
+            nums[k],
+          ];
+        }
+      }
+    }
+  }
+
+  return Object.values(result);
+};
+```
+
+- Time Complexity: `O(n^3)`, here n is the length of nums.
+- Space Complexity: `O(m)`, here m is the number of unique triplets.
