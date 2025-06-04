@@ -49,7 +49,7 @@ Notice that the solution set must not contain duplicate triplets.
 
 **Solution 1: (Brute force)**
 
-> [!NOTE]
+> [!WARNING]
 >
 > This solution hit _Time Limit Exceeded_.
 
