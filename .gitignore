@@ -3,3 +3,5 @@ pnpm-lock.yaml
 
 # ingnore temp folder
 temp
+
+*.exe
