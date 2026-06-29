@@ -79,8 +79,7 @@ void push(Stack *stack, int value)
   }
 
   // Increment top index and insert the value
-  stack->topIndex++;
-  stack->data[stack->topIndex] = value;
+  stack->data[++stack->topIndex] = value;
   printf("Push %d into the stack.\n", value);
 }
 
