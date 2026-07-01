@@ -75,7 +75,17 @@ void push(Stack *stack, int value)
   if (stack->topIndex == stack->capacity - 1)
   {
     stack->capacity *= 2;
-    stack->data = (int *)realloc(stack->data, stack->capacity * sizeof(int));
+
+    int *temp = (int *)realloc(stack->data, stack->capacity * sizeof(int));
+
+    // check if memory reallocation is successful.
+    if (temp == NULL)
+    {
+      fprintf(stderr, "Memory allocation failed!\n");
+      free(stack->data);
+      exit(1);
+    }
+    stack->data = temp;
   }
 
   // Increment top index and insert the value
