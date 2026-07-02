@@ -180,7 +180,9 @@ int main()
       }
       else if (choice == 'n' || choice == 'N')
       {
-        printf("%c\n", choice);
+        freeStack(s);
+        printf("\nExiting the application. Goodbye!\n");
+        running = false; // This breaks the while loop
       }
       else
       {
