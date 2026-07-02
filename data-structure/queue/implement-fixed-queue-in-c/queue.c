@@ -330,6 +330,13 @@ int main()
         scanf("%d", &value);
         enqueue(q, value);
         break;
+      case 2:
+        dequeue(q);
+        break;
+      case 3:
+        freeQueue(q);
+        q = NULL;
+        break;
       case 4:
         freeQueue(q);
         printf("\nExiting the application. Goodbye!\n");
