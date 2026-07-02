@@ -263,14 +263,14 @@ int main()
 
   Queue *q = NULL;
 
-  printf("=== C Queue ==\n");
-
   while (running)
   {
     // if q is null show prompt to create queue with initial capacity
     if (!q)
     {
       clearScreen();
+      printf("=== C Queue ==\n");
+
       printf("Create A Queue (y/n): ");
       scanf(" %c", &choice);
 
@@ -298,9 +298,6 @@ int main()
     }
     else
     {
-      clearScreen();
-      printf("=== C Queue ==\n");
-      printf("Queue Capacity: %d\n", initial_capacity);
       printQueue(q);
 
       printf("\n");
