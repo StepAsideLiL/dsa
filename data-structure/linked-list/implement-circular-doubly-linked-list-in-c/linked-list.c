@@ -51,7 +51,7 @@ Node *createNode(int value)
 }
 
 /**
- * @brief Insert an self referencial node.
+ * @brief Insert an self referential node.
  *
  * This function insert a node with the next and previous pointer points to itself.
  *
