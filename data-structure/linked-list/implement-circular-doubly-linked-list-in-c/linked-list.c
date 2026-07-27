@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 /**
  * @struct Doubly Node
@@ -251,4 +252,90 @@ void freeList(Node **headRef)
   }
 
   *headRef = NULL;
+}
+
+/**
+ * @brief Clear the terminal.
+ */
+void clearScreen()
+{
+  // \e[1J clears the screen, \e[H moves cursor to the top-left corner
+  printf("\e[1J\e[H");
+}
+
+int main()
+{
+  bool running = true;
+  char choice;
+  int operation;
+  int value;
+
+  Node *head = NULL;
+
+  while (running)
+  {
+    if (!head)
+    {
+      clearScreen();
+      printf("=== C Linked List ===\n");
+
+      printf("Create A Linked List (y/n): ");
+      scanf(" %c", &choice);
+
+      if (choice == 'y' || choice == 'Y')
+      {
+        printf("Add the first node (head) value: ");
+        scanf(" %d", &value);
+
+        insertInEmpty(&head, value);
+      }
+      else if (choice == 'n' || choice == 'N')
+      {
+        freeList(&head);
+        printf("\nExiting the application. Bye!\n");
+        running = false;
+      }
+      else
+      {
+        while (getchar() != '\n')
+          ;
+        clearScreen();
+        printf("Invalid input.\n\n");
+        continue;
+      }
+    }
+    else
+    {
+      printf("\n");
+      printf("Menus");
+      printf("1. Insert new value at the head\n");
+      printf("2. Insert new value at the tail\n");
+      printf("3. Delete a node by key data\n");
+      printf("4. Print linked list from tail\n");
+      printf("5. Free Linked List\n");
+      printf("Enter your choice (1-6): ");
+      if (scanf("%d", &operation) != 1)
+      {
+        printf("Invalid input! Please enter a number.\n");
+
+        // Clear the input buffer to prevent an infinite loop of errors
+        while (getchar() != '\n')
+          ;
+        continue;
+      }
+
+      switch (operation)
+      {
+      case 6:
+        freeList(&head);
+        running = false;
+        break;
+
+      default:
+        break;
+      }
+    }
+  }
+
+  return 0;
 }
