@@ -26,6 +26,12 @@ typedef struct Node
   struct Node *prev;
 } Node;
 
+typedef struct LinkedList
+{
+  struct Node *head;
+  int size;
+} LinkedList;
+
 /**
  * @brief Create a node.
  *
