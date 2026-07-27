@@ -26,11 +26,69 @@ typedef struct Node
   struct Node *prev;
 } Node;
 
+/**
+ * @struct Linked List
+ * @brief Linked list struct.
+ *
+ * Linked list struct stores linked list related data.
+ */
 typedef struct LinkedList
 {
+  /**
+   * @brief Head node.
+   *
+   * This node stores the head node of the linked list.
+   */
   struct Node *head;
+
+  /**
+   * @brief Size
+   *
+   * This value stores the size of the linked list.
+   */
   int size;
+
+  /**
+   * @brief Type of Linked List
+   *
+   * The value stores the type linked list.
+   * Linked list can be 4 types.
+   * 1 - Singly Linked List.
+   * 2 - Doubly Linked List.
+   * 3 - Circular Singly Linked List.
+   * 4 - Circular Doubly Linked List.
+   */
+  int type;
 } LinkedList;
+
+/**
+ * @brief Create Linked List.
+ *
+ * This function creates a linked list.
+ *
+ * @param type Type of linked list.
+ * @return `LinkedList` if successful, `NULL` otherwise
+ */
+LinkedList *createList(int type)
+{
+  if (type >= 1 && type <= 4)
+  {
+    LinkedList *list = (LinkedList *)malloc(sizeof(LinkedList));
+
+    list->head = NULL;
+    list->size = 0;
+    list->type = type;
+
+    return list;
+  }
+  else
+  {
+    printf("%d number is not a valid linked list type.\n", type);
+    printf("Use number 1 to 4.\n");
+
+    return NULL;
+  }
+}
 
 /**
  * @brief Create a node.
@@ -276,11 +334,13 @@ int main()
   int operation;
   int value;
 
-  Node *head = NULL;
+  LinkedList *list = NULL;
+
+  int linkedListType;
 
   while (running)
   {
-    if (!head)
+    if (!list)
     {
       clearScreen();
       printf("=== C Linked List ===\n");
@@ -293,11 +353,11 @@ int main()
         printf("Add the first node (head) value: ");
         scanf(" %d", &value);
 
-        insertInEmpty(&head, value);
+        insertInEmpty(&list->head, value);
       }
       else if (choice == 'n' || choice == 'N')
       {
-        freeList(&head);
+        freeList(&list->head);
         printf("\nExiting the application. Bye!\n");
         running = false;
       }
@@ -333,7 +393,7 @@ int main()
       switch (operation)
       {
       case 6:
-        freeList(&head);
+        freeList(&list->head);
         running = false;
         break;
 
