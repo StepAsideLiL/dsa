@@ -123,6 +123,24 @@ Node *create_node(int value)
 }
 
 /**
+ * @brief Checks if the list is empty.
+ *
+ * This function checks if the given list is empty.
+ *
+ * @param list Pointer of the list.
+ * @return `true` if list is empty, `false` otherwise.
+ */
+bool isEmpty(LinkedList *list)
+{
+  if (!list)
+  {
+    return true;
+  }
+
+  return list->size == 0;
+}
+
+/**
  * @brief Insert an self referential node.
  *
  * This function insert a node with the next and previous pointer points to itself.
@@ -206,12 +224,7 @@ void insert_at_head(LinkedList *list, int value)
     break;
   }
 
-  // newNode->next = head;
-  // newNode->prev = last;
-  // last->next = newNode;
-  // head->prev = newNode;
-
-  // Update head pointer
+  // Update the head pointer.
   list->head = newNode;
   list->size++;
 }
@@ -260,17 +273,11 @@ void insert_at_tail(LinkedList *list, int value)
     break;
   }
 
-  // newNode->next = head;
-  // newNode->prev = last;
-  // last->next = newNode;
-  // head->prev = newNode;
-
-  // head stays the same, newNode becomes the new 'last'
+  // Update the tail pointer.
   list->last = newNode;
   list->size++;
 }
 
-// Delete the first node matching 'key'
 /**
  * @brief Delete a key data.
  *
@@ -279,9 +286,9 @@ void insert_at_tail(LinkedList *list, int value)
  * @param headRef Pointer reference of the linked list head.
  * @param key Key to delete.
  */
-void deleteValue(LinkedList *list, int key)
+void delete_value(LinkedList *list, int key)
 {
-  if (list->head == NULL)
+  if (isEmpty(list))
   {
     printf("List is empty.\n");
     return;
@@ -434,6 +441,48 @@ int main()
 
   LinkedList *list = NULL;
   int linkedListType;
+
+  LinkedList *test_list = create_list(4);
+  insert_at_head(test_list, 1);
+  insert_at_head(test_list, 2);
+  insert_at_head(test_list, 3);
+  insert_at_tail(test_list, 4);
+  insert_at_tail(test_list, 5);
+  printf("Test List size: %d\n", test_list->size);
+  printf("Test List head data: %d\n", test_list->head->data);
+  printf("Test List last data: %d\n", test_list->last->data);
+
+  if (test_list->last->prev == NULL)
+  {
+    printf("Tail does not point to previous node.\n");
+  }
+  else
+  {
+    printf("Tail points to previous node.\n");
+    printf("test_list->last->prev->data = %d\n", test_list->last->prev->data);
+  }
+
+  if (test_list->last->next == NULL)
+  {
+    printf("Tail does not points to head node.\n");
+  }
+  else
+  {
+    printf("Tail points to the head node.\n");
+    printf("test_list->last->next->data = %d\n", test_list->last->next->data);
+    printf("test_list->head->data = %d\n", test_list->head->data);
+  }
+
+  if (test_list->head->prev == NULL)
+  {
+    printf("Head does not points to last node.\n");
+  }
+  else
+  {
+    printf("Head points to the last node.\n");
+    printf("test_list->head->prev->data = %d\n", test_list->head->prev->data);
+    printf("test_list->last->data = %d\n", test_list->last->data);
+  }
 
   while (running)
   {
