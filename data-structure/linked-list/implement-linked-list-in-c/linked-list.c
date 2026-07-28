@@ -76,7 +76,7 @@ typedef struct LinkedList
  * @param type Type of linked list.
  * @return `LinkedList` if successful, `NULL` otherwise
  */
-LinkedList *create_list(int type)
+LinkedList *createList(int type)
 {
   if (type >= 1 && type <= 4)
   {
@@ -105,7 +105,7 @@ LinkedList *create_list(int type)
  * @param value Node data.
  * @return node if successful.
  */
-Node *create_node(int value)
+Node *createNode(int value)
 {
   Node *node = (Node *)malloc(sizeof(Node));
 
@@ -148,9 +148,9 @@ bool isEmpty(LinkedList *list)
  * @param headRef Pointer reference of the linked list head.
  * @param value Node data.
  */
-void insert_in_empty(LinkedList *list, int value)
+void insertInEmpty(LinkedList *list, int value)
 {
-  Node *node = create_node(value);
+  Node *node = createNode(value);
 
   switch (list->type)
   {
@@ -188,17 +188,17 @@ void insert_in_empty(LinkedList *list, int value)
  * @param headRef Pointer reference of the linked list head.
  * @param value Node data.
  */
-void insert_at_head(LinkedList *list, int value)
+void insertAtHead(LinkedList *list, int value)
 {
   if (list->head == NULL)
   {
-    insert_in_empty(list, value);
+    insertInEmpty(list, value);
     return;
   }
 
   Node *head = list->head;
   Node *last = list->last;
-  Node *newNode = create_node(value);
+  Node *newNode = createNode(value);
 
   switch (list->type)
   {
@@ -237,17 +237,17 @@ void insert_at_head(LinkedList *list, int value)
  * @param headRef Pointer reference of the linked list head.
  * @param value Node data.
  */
-void insert_at_tail(LinkedList *list, int value)
+void insertAtTail(LinkedList *list, int value)
 {
   if (list->head == NULL)
   {
-    insert_in_empty(list, value);
+    insertInEmpty(list, value);
     return;
   }
 
   Node *head = list->head;
   Node *last = list->last;
-  Node *newNode = create_node(value);
+  Node *newNode = createNode(value);
 
   switch (list->type)
   {
@@ -286,7 +286,7 @@ void insert_at_tail(LinkedList *list, int value)
  * @param headRef Pointer reference of the linked list head.
  * @param key Key to delete.
  */
-void delete_value(LinkedList *list, int key)
+void deleteValue(LinkedList *list, int key)
 {
   if (isEmpty(list))
   {
@@ -410,7 +410,7 @@ void freeList(Node **headRef)
 /**
  * @brief Clear the terminal.
  */
-void clear_screen()
+void clearScreen()
 {
   // \e[1J clears the screen, \e[H moves cursor to the top-left corner
   printf("\e[1J\e[H");
@@ -421,7 +421,7 @@ void clear_screen()
  *
  * This function interrupts the program to print some warning or error before clearing the screen.
  */
-void press_enter_to_continue()
+void pressEnterToContinue()
 {
   // clear input buffer.
   int c;
@@ -442,12 +442,12 @@ int main()
   LinkedList *list = NULL;
   int linkedListType;
 
-  LinkedList *test_list = create_list(4);
-  insert_at_head(test_list, 1);
-  insert_at_head(test_list, 2);
-  insert_at_head(test_list, 3);
-  insert_at_tail(test_list, 4);
-  insert_at_tail(test_list, 5);
+  LinkedList *test_list = createList(4);
+  insertAtHead(test_list, 1);
+  insertAtHead(test_list, 2);
+  insertAtHead(test_list, 3);
+  insertAtTail(test_list, 4);
+  insertAtTail(test_list, 5);
   printf("Test List size: %d\n", test_list->size);
   printf("Test List head data: %d\n", test_list->head->data);
   printf("Test List last data: %d\n", test_list->last->data);
@@ -488,7 +488,7 @@ int main()
   {
     if (!list)
     {
-      clear_screen();
+      clearScreen();
       printf("=== C Linked List ===\n");
 
       printf("Create A Linked List (y/n): ");
@@ -504,11 +504,11 @@ int main()
         printf("Enter the type of linked list (1 - 4): ");
         scanf(" %d", &inputValue);
 
-        list = create_list(inputValue);
+        list = createList(inputValue);
 
         if (!list)
         {
-          press_enter_to_continue();
+          pressEnterToContinue();
         }
       }
       else if (choice == 'n' || choice == 'N')
@@ -519,9 +519,9 @@ int main()
       }
       else
       {
-        clear_screen();
+        clearScreen();
         printf("Invalid input.\n\n");
-        press_enter_to_continue();
+        pressEnterToContinue();
         continue;
       }
     }
@@ -550,12 +550,12 @@ int main()
       case 1:
         printf("Value: ");
         scanf("%d", &inputValue);
-        insert_at_head(list, inputValue);
+        insertAtHead(list, inputValue);
         break;
       case 2:
         printf("Value: ");
         scanf("%d", &inputValue);
-        insert_at_tail(list, inputValue);
+        insertAtTail(list, inputValue);
         break;
       case 6:
         freeList(&list->head);
