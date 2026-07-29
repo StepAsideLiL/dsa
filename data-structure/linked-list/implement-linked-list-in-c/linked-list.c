@@ -83,6 +83,7 @@ LinkedList *createList(int type)
     LinkedList *list = (LinkedList *)malloc(sizeof(LinkedList));
 
     list->head = NULL;
+    list->last = NULL;
     list->size = 0;
     list->type = type;
 
@@ -132,7 +133,7 @@ Node *createNode(int value)
  */
 bool isEmpty(LinkedList *list)
 {
-  if (!list)
+  if (!list || list->head == NULL)
   {
     return true;
   }
@@ -190,7 +191,7 @@ void insertInEmpty(LinkedList *list, int value)
  */
 void insertAtHead(LinkedList *list, int value)
 {
-  if (list->head == NULL)
+  if (isEmpty(list))
   {
     insertInEmpty(list, value);
     return;
@@ -239,7 +240,7 @@ void insertAtHead(LinkedList *list, int value)
  */
 void insertAtTail(LinkedList *list, int value)
 {
-  if (list->head == NULL)
+  if (isEmpty(list))
   {
     insertInEmpty(list, value);
     return;
