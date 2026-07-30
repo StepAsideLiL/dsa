@@ -2,7 +2,7 @@
 
 A Stack is an [Abstract Data Type (ADT)](https://en.wikipedia.org/wiki/Abstract_data_type) with two operation: _Push_(insert) and _Pop_(delete).
 
-## Characteristics Of Stace
+## Characteristics Of Stack
 
 - _Linear_ data structure like [array](<https://en.wikipedia.org/wiki/Array_(data_structure)>).
 - Follows _LIFO(Last In First Out)_ or FILO(First In Last Out).
