@@ -279,6 +279,69 @@ void insertAtTail(LinkedList *list, int value)
   list->size++;
 }
 
+void deleteSinglyListedListKey(LinkedList *list, int key)
+{
+  if (isEmpty(list))
+  {
+    printf("List is empty.\n");
+    return;
+  }
+
+  Node *curr = list->head;
+  Node *prev = NULL;
+
+  while (curr != NULL && curr->data != key)
+  {
+    // printf("%d\n", curr->data);
+    prev = curr;
+    curr = curr->next;
+  }
+
+  if (curr == NULL || curr->data != key)
+  {
+    printf("Linked list does not contain %d!\n", key);
+    return;
+  }
+
+  // Case 1: List contains only head node.
+  if (curr->next == NULL && curr->data == key)
+  {
+    printf("Case 1 applyed\n");
+    list->head = NULL;
+    list->last = NULL;
+    free(curr);
+    list->size--;
+    return;
+  }
+
+  // Case 2: Key is in the head node.
+  if (list->head == curr && curr->data == key)
+  {
+    printf("Case 2 applyed\n");
+    list->head = curr->next;
+    curr->next = NULL;
+    free(curr);
+    list->size--;
+    return;
+  }
+
+  // Case 3: Key is in the tail node.
+  if (list->last == curr && curr->data == key)
+  {
+    printf("Case 3 applyed");
+    prev->next = NULL;
+    list->last = prev;
+    free(curr);
+    list->size--;
+    return;
+  }
+
+  // Case 4: Key is somewhere in the middle.
+  prev->next = curr->next;
+  free(curr);
+  list->size--;
+}
+
 /**
  * @brief Delete a key data.
  *
@@ -298,39 +361,56 @@ void deleteValue(LinkedList *list, int key)
   Node *curr = list->head;
 
   // Search for the node containing key
-  do
+  switch (list->type)
   {
-    if (curr->data == key)
-      break;
-    curr = curr->next;
-  } while (curr != list->head);
-
-  // Key was not found
-  if (curr->data != key)
-  {
-    printf("Value %d not found in list.\n", key);
-    return;
+  case 1:
+    deleteSinglyListedListKey(list, key);
+    break;
+  case 2:
+    //
+    break;
+  case 3:
+    //
+    break;
+  case 4:
+    do
+    {
+      if (curr->data == key)
+        break;
+      curr = curr->next;
+    } while (curr != list->head);
+    break;
+  default:
+    printf("\nType %d does not exists.\n\n", list->type);
+    break;
   }
 
-  // Case 1: Only one node in the list
-  if (curr->next == curr)
-  {
-    free(curr);
-    list->head = NULL;
-    return;
-  }
+  // // Key was not found
+  // if (curr->data != key)
+  // {
+  //   printf("Value %d not found in list.\n", key);
+  //   return;
+  // }
 
-  // Case 2: Deleting the head node
-  if (curr == list->head)
-  {
-    list->head = curr->next;
-  }
+  // // Case 1: Only one node in the list
+  // if (curr->next == curr)
+  // {
+  //   free(curr);
+  //   list->head = NULL;
+  //   return;
+  // }
 
-  // Unlink the node from both neighbors
-  curr->prev->next = curr->next;
-  curr->next->prev = curr->prev;
+  // // Case 2: Deleting the head node
+  // if (curr == list->head)
+  // {
+  //   list->head = curr->next;
+  // }
 
-  free(curr);
+  // // Unlink the node from both neighbors
+  // curr->prev->next = curr->next;
+  // curr->next->prev = curr->prev;
+
+  // free(curr);
 }
 
 /**
@@ -443,131 +523,142 @@ int main()
   LinkedList *list = NULL;
   int linkedListType;
 
-  LinkedList *test_list = createList(4);
+  LinkedList *test_list = createList(1);
   insertAtHead(test_list, 1);
-  insertAtHead(test_list, 2);
-  insertAtHead(test_list, 3);
-  insertAtTail(test_list, 4);
-  insertAtTail(test_list, 5);
+  // insertAtHead(test_list, 2);
+  // insertAtHead(test_list, 3);
+  // insertAtTail(test_list, 4);
+  // insertAtTail(test_list, 5);
+  deleteValue(test_list, 1);
   printf("Test List size: %d\n", test_list->size);
-  printf("Test List head data: %d\n", test_list->head->data);
-  printf("Test List last data: %d\n", test_list->last->data);
+  // printf("Test List head data: %d\n", test_list->head->data);
+  // printf("Test List last data: %d\n", test_list->last->data);
 
-  if (test_list->last->prev == NULL)
-  {
-    printf("Tail does not point to previous node.\n");
-  }
-  else
-  {
-    printf("Tail points to previous node.\n");
-    printf("test_list->last->prev->data = %d\n", test_list->last->prev->data);
-  }
+  // if (test_list->last->prev == NULL)
+  // {
+  //   printf("Tail does not point to previous node.\n");
+  // }
+  // else
+  // {
+  //   printf("Tail points to previous node.\n");
+  //   printf("test_list->last->prev->data = %d\n", test_list->last->prev->data);
+  // }
 
-  if (test_list->last->next == NULL)
-  {
-    printf("Tail does not points to head node.\n");
-  }
-  else
-  {
-    printf("Tail points to the head node.\n");
-    printf("test_list->last->next->data = %d\n", test_list->last->next->data);
-    printf("test_list->head->data = %d\n", test_list->head->data);
-  }
+  // if (test_list->last->next == NULL)
+  // {
+  //   printf("Tail does not points to head node.\n");
+  // }
+  // else
+  // {
+  //   printf("Tail points to the head node.\n");
+  //   printf("test_list->last->next->data = %d\n", test_list->last->next->data);
+  //   printf("test_list->head->data = %d\n", test_list->head->data);
+  // }
 
-  if (test_list->head->prev == NULL)
-  {
-    printf("Head does not points to last node.\n");
-  }
-  else
-  {
-    printf("Head points to the last node.\n");
-    printf("test_list->head->prev->data = %d\n", test_list->head->prev->data);
-    printf("test_list->last->data = %d\n", test_list->last->data);
-  }
+  // if (test_list->head->prev == NULL)
+  // {
+  //   printf("Head does not points to last node.\n");
+  // }
+  // else
+  // {
+  //   printf("Head points to the last node.\n");
+  //   printf("test_list->head->prev->data = %d\n", test_list->head->prev->data);
+  //   printf("test_list->last->data = %d\n", test_list->last->data);
+  // }
 
-  while (running)
-  {
-    if (!list)
-    {
-      clearScreen();
-      printf("=== C Linked List ===\n");
+  // Node *curr = test_list->head;
 
-      printf("Create A Linked List (y/n): ");
-      scanf(" %c", &choice);
+  // printf("Print all node key\n");
 
-      if (choice == 'y' || choice == 'Y')
-      {
-        printf("Types of Linked List.\n");
-        printf("1 - Singly Linked List.\n");
-        printf("2 - Doubly Linked List.\n");
-        printf("3 - Circular Singly Linked List.\n");
-        printf("4 - Circular Doubly Linked List.\n");
-        printf("Enter the type of linked list (1 - 4): ");
-        scanf(" %d", &inputValue);
+  // while (curr != NULL)
+  // {
+  //   printf("%d\n", curr->data);
+  //   curr = curr->next;
+  // }
 
-        list = createList(inputValue);
+  // while (running)
+  // {
+  //   if (!list)
+  //   {
+  //     clearScreen();
+  //     printf("=== C Linked List ===\n");
 
-        if (!list)
-        {
-          pressEnterToContinue();
-        }
-      }
-      else if (choice == 'n' || choice == 'N')
-      {
-        freeList(&list->head);
-        printf("\nExiting the application. Bye!\n");
-        running = false;
-      }
-      else
-      {
-        clearScreen();
-        printf("Invalid input.\n\n");
-        pressEnterToContinue();
-        continue;
-      }
-    }
-    else
-    {
-      printf("\n");
-      printf("Menus\n");
-      printf("1. Insert new value at the head\n");
-      printf("2. Insert new value at the tail\n");
-      printf("3. Delete a node by key data\n");
-      printf("4. Print linked list from tail\n");
-      printf("5. Free Linked List\n");
-      printf("Enter your choice (1-6): ");
-      if (scanf("%d", &operation) != 1)
-      {
-        printf("Invalid input! Please enter a number.\n");
+  //     printf("Create A Linked List (y/n): ");
+  //     scanf(" %c", &choice);
 
-        // Clear the input buffer to prevent an infinite loop of errors
-        while (getchar() != '\n')
-          ;
-        continue;
-      }
+  //     if (choice == 'y' || choice == 'Y')
+  //     {
+  //       printf("Types of Linked List.\n");
+  //       printf("1 - Singly Linked List.\n");
+  //       printf("2 - Doubly Linked List.\n");
+  //       printf("3 - Circular Singly Linked List.\n");
+  //       printf("4 - Circular Doubly Linked List.\n");
+  //       printf("Enter the type of linked list (1 - 4): ");
+  //       scanf(" %d", &inputValue);
 
-      switch (operation)
-      {
-      case 1:
-        printf("Value: ");
-        scanf("%d", &inputValue);
-        insertAtHead(list, inputValue);
-        break;
-      case 2:
-        printf("Value: ");
-        scanf("%d", &inputValue);
-        insertAtTail(list, inputValue);
-        break;
-      case 6:
-        freeList(&list->head);
-        running = false;
-        break;
+  //       list = createList(inputValue);
 
-      default:
-        break;
-      }
-    }
-  }
+  //       if (!list)
+  //       {
+  //         pressEnterToContinue();
+  //       }
+  //     }
+  //     else if (choice == 'n' || choice == 'N')
+  //     {
+  //       freeList(&list->head);
+  //       printf("\nExiting the application. Bye!\n");
+  //       running = false;
+  //     }
+  //     else
+  //     {
+  //       clearScreen();
+  //       printf("Invalid input.\n\n");
+  //       pressEnterToContinue();
+  //       continue;
+  //     }
+  //   }
+  //   else
+  //   {
+  //     printf("\n");
+  //     printf("Menus\n");
+  //     printf("1. Insert new value at the head\n");
+  //     printf("2. Insert new value at the tail\n");
+  //     printf("3. Delete a node by key data\n");
+  //     printf("4. Print linked list from tail\n");
+  //     printf("5. Free Linked List\n");
+  //     printf("Enter your choice (1-6): ");
+  //     if (scanf("%d", &operation) != 1)
+  //     {
+  //       printf("Invalid input! Please enter a number.\n");
+
+  //       // Clear the input buffer to prevent an infinite loop of errors
+  //       while (getchar() != '\n')
+  //         ;
+  //       continue;
+  //     }
+
+  //     switch (operation)
+  //     {
+  //     case 1:
+  //       printf("Value: ");
+  //       scanf("%d", &inputValue);
+  //       insertAtHead(list, inputValue);
+  //       break;
+  //     case 2:
+  //       printf("Value: ");
+  //       scanf("%d", &inputValue);
+  //       insertAtTail(list, inputValue);
+  //       break;
+  //     case 6:
+  //       freeList(&list->head);
+  //       running = false;
+  //       break;
+
+  //     default:
+  //       break;
+  //     }
+  //   }
+  // }
 
   return 0;
 }
