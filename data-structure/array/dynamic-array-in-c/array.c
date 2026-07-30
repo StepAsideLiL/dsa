@@ -36,7 +36,7 @@ typedef struct DynamicArray
  */
 DynamicArray *createDynamicArray(int initailCapacity)
 {
-  int initailCapacity = initailCapacity > 0 ? initailCapacity : 8;
+  initailCapacity = initailCapacity > 0 ? initailCapacity : 8;
 
   DynamicArray *d = (DynamicArray *)malloc(sizeof(DynamicArray));
   if (!d)
@@ -74,7 +74,7 @@ bool resize(DynamicArray *d, int newCapacity)
     return false;
   }
 
-  DynamicArray *temp = d->data;
+  int *temp = d->data;
   int *newData = (int *)realloc(temp, newCapacity * sizeof(int));
   if (!newData)
   {
@@ -128,7 +128,7 @@ int pop(DynamicArray *d)
   if (!d || d->length == 0)
   {
     printf("Array does not exits.\n");
-    return NULL;
+    return -1;
   }
 
   int value = d->data[d->length - 1];
@@ -182,4 +182,9 @@ void printArray(DynamicArray *d)
   printf("]\n");
   printf("Array lenght: %d\n", d->length);
   printf("Array capasity: %d\n", d->capacity);
+}
+
+int main()
+{
+  return 0;
 }
