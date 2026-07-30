@@ -82,7 +82,7 @@ bool resize(DynamicArray *d, int newCapacity)
     return false;
   }
 
-  d->data = temp;
+  d->data = newData;
   d->capacity = newCapacity;
   return true;
 }
