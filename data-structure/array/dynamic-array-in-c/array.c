@@ -68,9 +68,9 @@ DynamicArray *createDynamicArray(int initailCapacity)
  */
 bool resize(DynamicArray *d, int newCapacity)
 {
-  if (newCapacity <= d->capacity)
+  if (newCapacity <= d->length)
   {
-    printf("New capacity must be greater than the current capacity.\n");
+    printf("New capacity must be greater than the array length.\n");
     return false;
   }
 
@@ -168,7 +168,7 @@ void freeArray(DynamicArray *d)
  */
 void printArray(DynamicArray *d)
 {
-  if (!d || d->length == 0)
+  if (!d)
   {
     printf("Array does not exits.\n");
     return;
@@ -181,7 +181,7 @@ void printArray(DynamicArray *d)
   }
   printf("]\n");
   printf("Array lenght: %d\n", d->length);
-  printf("Array capasity: %d\n", d->capacity);
+  printf("Array capacity: %d\n", d->capacity);
 }
 
 /**
@@ -244,7 +244,7 @@ int main()
     }
     else
     {
-      printf("Array lenght: %d\n", d->length);
+      printf("\n");
       printArray(d);
       printf("Menus\n");
       printf("1. Push a value.\n");
