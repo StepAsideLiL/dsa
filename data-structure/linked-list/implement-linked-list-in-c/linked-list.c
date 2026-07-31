@@ -82,6 +82,12 @@ LinkedList *createList(int type)
   {
     LinkedList *list = (LinkedList *)malloc(sizeof(LinkedList));
 
+    if (!list)
+    {
+      printf("[createList]: Memory allocation failed!\n");
+      return NULL;
+    }
+
     list->head = NULL;
     list->last = NULL;
     list->size = 0;
@@ -91,7 +97,7 @@ LinkedList *createList(int type)
   }
   else
   {
-    printf("%d number is not a valid linked list type.\n", type);
+    printf("[createList]: %d number is not a valid linked list type.\n", type);
     printf("Use number 1 to 4.\n");
 
     return NULL;
@@ -112,8 +118,8 @@ Node *createNode(int value)
 
   if (!node)
   {
-    printf("Memory allocation failed!\n");
-    exit(1);
+    printf("[createNode]: Memory allocation failed!\n");
+    return NULL;
   }
 
   node->data = value;
@@ -172,7 +178,7 @@ void insertInEmpty(LinkedList *list, int value)
     node->prev = node;
     break;
   default:
-    printf("\nType %d does not exists.\n\n", list->type);
+    printf("[insertInEmpty]: Type %d does not exists.\n\n", list->type);
     break;
   }
 
@@ -221,7 +227,7 @@ void insertAtHead(LinkedList *list, int value)
     head->prev = newNode;
     break;
   default:
-    printf("\nType %d does not exists.\n\n", list->type);
+    printf("[insertAtHead]: Type %d does not exists.\n\n", list->type);
     break;
   }
 
@@ -270,7 +276,7 @@ void insertAtTail(LinkedList *list, int value)
     head->prev = newNode;
     break;
   default:
-    printf("\nType %d does not exists.\n\n", list->type);
+    printf("[insertAtTail]: Type %d does not exists.\n\n", list->type);
     break;
   }
 
@@ -283,7 +289,7 @@ void deleteSinglyListedListKey(LinkedList *list, int key)
 {
   if (isEmpty(list))
   {
-    printf("List is empty.\n");
+    printf("[deleteSinglyListedListKey]: List is empty!\n");
     return;
   }
 
@@ -292,21 +298,20 @@ void deleteSinglyListedListKey(LinkedList *list, int key)
 
   while (curr != NULL && curr->data != key)
   {
-    // printf("%d\n", curr->data);
     prev = curr;
     curr = curr->next;
   }
 
   if (curr == NULL || curr->data != key)
   {
-    printf("Linked list does not contain %d!\n", key);
+    printf("[deleteSinglyListedListKey]: Linked list does not contain %d!\n", key);
     return;
   }
 
   // Case 1: List contains only head node.
-  if (curr->next == NULL && curr->data == key)
+  if (list->head->next == NULL && curr->data == key)
   {
-    printf("Case 1 applyed\n");
+    printf("[deleteSinglyListedListKey]: Case 1 applyed\n");
     list->head = NULL;
     list->last = NULL;
     free(curr);
@@ -317,7 +322,7 @@ void deleteSinglyListedListKey(LinkedList *list, int key)
   // Case 2: Key is in the head node.
   if (list->head == curr && curr->data == key)
   {
-    printf("Case 2 applyed\n");
+    printf("[deleteSinglyListedListKey]: Case 2 applyed\n");
     list->head = curr->next;
     curr->next = NULL;
     free(curr);
@@ -328,7 +333,7 @@ void deleteSinglyListedListKey(LinkedList *list, int key)
   // Case 3: Key is in the tail node.
   if (list->last == curr && curr->data == key)
   {
-    printf("Case 3 applyed");
+    printf("[deleteSinglyListedListKey]: Case 3 applyed\n");
     prev->next = NULL;
     list->last = prev;
     free(curr);
@@ -337,6 +342,7 @@ void deleteSinglyListedListKey(LinkedList *list, int key)
   }
 
   // Case 4: Key is somewhere in the middle.
+  printf("[deleteSinglyListedListKey]: Case 4 applyed\n");
   prev->next = curr->next;
   free(curr);
   list->size--;
@@ -381,7 +387,7 @@ void deleteValue(LinkedList *list, int key)
     } while (curr != list->head);
     break;
   default:
-    printf("\nType %d does not exists.\n\n", list->type);
+    printf("[deleteValue]: Type %d does not exists.\n\n", list->type);
     break;
   }
 
@@ -411,6 +417,37 @@ void deleteValue(LinkedList *list, int key)
   // curr->next->prev = curr->prev;
 
   // free(curr);
+}
+
+/**
+ * @brief Print linked list.
+ *
+ * This function prints the linked list key and what it points to.
+ *
+ * @param list Pointer of the list.
+ * @param direction Print direction. `1` for head to tail, `2` for tail to head.
+ */
+void printLinkedList(LinkedList *list, int direction)
+{
+  if (isEmpty(list))
+  {
+    printf("[printLinkedList]: List is empty!\n");
+    return;
+  }
+
+  switch (list->type)
+  {
+  case 1:
+    printf("(head)");
+    for (Node *curr = list->head; curr != NULL; curr = curr->next)
+    {
+      printf("%d%s", curr->data, curr->next == NULL ? "(tail)\n" : "->");
+    }
+    break;
+
+  default:
+    break;
+  }
 }
 
 /**
@@ -461,7 +498,6 @@ void printBackward(Node *head)
   printf("(tail)\n");
 }
 
-// Free memory for all nodes
 /**
  * @brief Free all the nodes of linked list from memeory.
  *
@@ -520,17 +556,35 @@ int main()
   int operation;
   int inputValue;
 
-  LinkedList *list = NULL;
+  LinkedList *list = createList(1);
   int linkedListType;
 
-  LinkedList *test_list = createList(1);
-  insertAtHead(test_list, 1);
-  // insertAtHead(test_list, 2);
-  // insertAtHead(test_list, 3);
-  // insertAtTail(test_list, 4);
-  // insertAtTail(test_list, 5);
-  deleteValue(test_list, 1);
-  printf("Test List size: %d\n", test_list->size);
+  for (int i = 1; i <= 32; i++)
+  {
+    insertAtTail(list, i);
+    printLinkedList(list, 1);
+  }
+
+  for (int j = 33; j <= 50; j++)
+  {
+    insertAtHead(list, j);
+    printLinkedList(list, 1);
+  }
+
+  printf("\n===\n");
+
+  deleteSinglyListedListKey(list, 50);
+  printLinkedList(list, 1);
+  deleteSinglyListedListKey(list, 32);
+  printLinkedList(list, 1);
+
+  for (int k = 1; k <= 50; k++)
+  {
+    deleteSinglyListedListKey(list, k);
+    printLinkedList(list, 1);
+  }
+
+  // printf("Test List size: %d\n", test_list->size);
   // printf("Test List head data: %d\n", test_list->head->data);
   // printf("Test List last data: %d\n", test_list->last->data);
 
