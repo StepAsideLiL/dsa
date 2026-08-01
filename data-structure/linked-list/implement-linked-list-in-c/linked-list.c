@@ -285,6 +285,31 @@ void insertAtTail(LinkedList *list, int key)
   list->size++;
 }
 
+Node *searchListByKey(LinkedList *list, int key)
+{
+  if (isEmpty(list))
+  {
+    printf("[searchListByKey]: List is empty!\n");
+    return NULL;
+  }
+
+  Node *curr = list->head;
+
+  switch (list->type)
+  {
+  case 1:
+    while (curr != NULL && curr->key != key)
+    {
+      curr = curr->next;
+    }
+    break;
+  default:
+    break;
+  }
+
+  return curr;
+}
+
 /**
  * @brief Delete node by key.
  *
@@ -567,6 +592,8 @@ int main()
   LinkedList *list = createList(1);
   int linkedListType;
 
+  clearScreen();
+
   for (int i = 1; i <= 32; i++)
   {
     insertAtTail(list, i);
@@ -579,7 +606,14 @@ int main()
     printLinkedList(list, 1);
   }
 
-  printf("\n===\n");
+  printf("\n=== Search ===\n\n");
+
+  int num1 = 32;
+  int num2 = 100;
+  printf("Search result: %d %s", num1, !searchListByKey(list, num1) ? "Not Found\n" : "Found\n");
+  printf("Search result: %d %s", num2, !searchListByKey(list, num2) ? "Not Found\n" : "Found\n");
+
+  printf("\n=== Delete ===\n\n");
 
   deleteSinglyListedListKey(list, 50);
   printLinkedList(list, 1);
