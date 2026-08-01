@@ -3,7 +3,7 @@
 #include <stdbool.h>
 
 /**
- * @struct Doubly Node
+ * @struct Doubly Node (Element)
  * @brief Doubly Linked List Node
  *
  * A node which stores data and two pointer for next and previous node.
@@ -11,9 +11,9 @@
 typedef struct Node
 {
   /**
-   * @brief Data of the node.
+   * @brief Key of the node.
    */
-  int data;
+  int key;
 
   /**
    * @brief Pointer for next node.
@@ -37,16 +37,16 @@ typedef struct LinkedList
   /**
    * @brief Head node.
    *
-   * This node is the head node of the linked list.
+   * This node is the head (first) node of the linked list.
    */
   struct Node *head;
 
   /**
-   * @brief Last Node.
+   * @brief Tail Node.
    *
-   * This node is the last node of the linked list.
+   * This node is the tail (last) node of the linked list.
    */
-  struct Node *last;
+  struct Node *tail;
 
   /**
    * @brief Size
@@ -89,7 +89,7 @@ LinkedList *createList(int type)
     }
 
     list->head = NULL;
-    list->last = NULL;
+    list->tail = NULL;
     list->size = 0;
     list->type = type;
 
@@ -112,7 +112,7 @@ LinkedList *createList(int type)
  * @param value Node data.
  * @return node if successful.
  */
-Node *createNode(int value)
+Node *createNode(int key)
 {
   Node *node = (Node *)malloc(sizeof(Node));
 
@@ -122,7 +122,7 @@ Node *createNode(int value)
     return NULL;
   }
 
-  node->data = value;
+  node->key = key;
   node->next = NULL;
   node->prev = NULL;
 
@@ -148,16 +148,16 @@ bool isEmpty(LinkedList *list)
 }
 
 /**
- * @brief Insert an self referential node.
+ * @brief Insert a node in empty list.
  *
- * This function insert a node with the next and previous pointer points to itself.
+ * This function inserts the first node in an empty list. Depending of the type the node may or may not self referential.
  *
- * @param headRef Pointer reference of the linked list head.
- * @param value Node data.
+ * @param list Pointer of the list.
+ * @param key Node key.
  */
-void insertInEmpty(LinkedList *list, int value)
+void insertInEmpty(LinkedList *list, int key)
 {
-  Node *node = createNode(value);
+  Node *node = createNode(key);
 
   switch (list->type)
   {
@@ -183,7 +183,7 @@ void insertInEmpty(LinkedList *list, int value)
   }
 
   list->head = node;
-  list->last = node;
+  list->tail = node;
   list->size++;
 }
 
@@ -192,39 +192,39 @@ void insertInEmpty(LinkedList *list, int value)
  *
  * This function inserts a node at the beginning of linked list.
  *
- * @param headRef Pointer reference of the linked list head.
- * @param value Node data.
+ * @param list Pointer of the list.
+ * @param key Node key.
  */
-void insertAtHead(LinkedList *list, int value)
+void insertAtHead(LinkedList *list, int key)
 {
   if (isEmpty(list))
   {
-    insertInEmpty(list, value);
+    insertInEmpty(list, key);
     return;
   }
 
   Node *head = list->head;
-  Node *last = list->last;
-  Node *newNode = createNode(value);
+  Node *last = list->tail;
+  Node *node = createNode(key);
 
   switch (list->type)
   {
   case 1:
-    newNode->next = head;
+    node->next = head;
     break;
   case 2:
-    newNode->next = head;
-    head->prev = newNode;
+    node->next = head;
+    head->prev = node;
     break;
   case 3:
-    newNode->next = head;
-    last->next = newNode;
+    node->next = head;
+    last->next = node;
     break;
   case 4:
-    newNode->next = head;
-    newNode->prev = last;
-    last->next = newNode;
-    head->prev = newNode;
+    node->next = head;
+    node->prev = last;
+    last->next = node;
+    head->prev = node;
     break;
   default:
     printf("[insertAtHead]: Type %d does not exists.\n\n", list->type);
@@ -232,7 +232,7 @@ void insertAtHead(LinkedList *list, int value)
   }
 
   // Update the head pointer.
-  list->head = newNode;
+  list->head = node;
   list->size++;
 }
 
@@ -241,39 +241,39 @@ void insertAtHead(LinkedList *list, int value)
  *
  * This function inserts a node at the end of linked list.
  *
- * @param headRef Pointer reference of the linked list head.
- * @param value Node data.
+ * @param list Pointer of the list.
+ * @param key Node key.
  */
-void insertAtTail(LinkedList *list, int value)
+void insertAtTail(LinkedList *list, int key)
 {
   if (isEmpty(list))
   {
-    insertInEmpty(list, value);
+    insertInEmpty(list, key);
     return;
   }
 
   Node *head = list->head;
-  Node *last = list->last;
-  Node *newNode = createNode(value);
+  Node *last = list->tail;
+  Node *node = createNode(key);
 
   switch (list->type)
   {
   case 1:
-    last->next = newNode;
+    last->next = node;
     break;
   case 2:
-    last->next = newNode;
-    newNode->prev = last;
+    last->next = node;
+    node->prev = last;
     break;
   case 3:
-    last->next = newNode;
-    newNode->next = head;
+    last->next = node;
+    node->next = head;
     break;
   case 4:
-    newNode->next = head;
-    newNode->prev = last;
-    last->next = newNode;
-    head->prev = newNode;
+    node->next = head;
+    node->prev = last;
+    last->next = node;
+    head->prev = node;
     break;
   default:
     printf("[insertAtTail]: Type %d does not exists.\n\n", list->type);
@@ -281,10 +281,18 @@ void insertAtTail(LinkedList *list, int value)
   }
 
   // Update the tail pointer.
-  list->last = newNode;
+  list->tail = node;
   list->size++;
 }
 
+/**
+ * @brief Delete node by key.
+ *
+ * This function deletes a node by key from singly linked list.
+ *
+ * @param list Pointer of the list.
+ * @param key Node key.
+ */
 void deleteSinglyListedListKey(LinkedList *list, int key)
 {
   if (isEmpty(list))
@@ -296,31 +304,31 @@ void deleteSinglyListedListKey(LinkedList *list, int key)
   Node *curr = list->head;
   Node *prev = NULL;
 
-  while (curr != NULL && curr->data != key)
+  while (curr != NULL && curr->key != key)
   {
     prev = curr;
     curr = curr->next;
   }
 
-  if (curr == NULL || curr->data != key)
+  if (curr == NULL || curr->key != key)
   {
     printf("[deleteSinglyListedListKey]: Linked list does not contain %d!\n", key);
     return;
   }
 
   // Case 1: List contains only head node.
-  if (list->head->next == NULL && curr->data == key)
+  if (list->head->next == NULL && curr->key == key)
   {
     printf("[deleteSinglyListedListKey]: Case 1 applyed\n");
     list->head = NULL;
-    list->last = NULL;
+    list->tail = NULL;
     free(curr);
     list->size--;
     return;
   }
 
   // Case 2: Key is in the head node.
-  if (list->head == curr && curr->data == key)
+  if (list->head == curr && curr->key == key)
   {
     printf("[deleteSinglyListedListKey]: Case 2 applyed\n");
     list->head = curr->next;
@@ -331,11 +339,11 @@ void deleteSinglyListedListKey(LinkedList *list, int key)
   }
 
   // Case 3: Key is in the tail node.
-  if (list->last == curr && curr->data == key)
+  if (list->tail == curr && curr->key == key)
   {
     printf("[deleteSinglyListedListKey]: Case 3 applyed\n");
     prev->next = NULL;
-    list->last = prev;
+    list->tail = prev;
     free(curr);
     list->size--;
     return;
@@ -349,12 +357,12 @@ void deleteSinglyListedListKey(LinkedList *list, int key)
 }
 
 /**
- * @brief Delete a key data.
+ * @brief Delete node by key.
  *
- * This function delete the first matching key data from linked list.
+ * This function delete the first matching key from linked list.
  *
- * @param headRef Pointer reference of the linked list head.
- * @param key Key to delete.
+ * @param list Pointer of the list.
+ * @param key Node key.
  */
 void deleteValue(LinkedList *list, int key)
 {
@@ -381,7 +389,7 @@ void deleteValue(LinkedList *list, int key)
   case 4:
     do
     {
-      if (curr->data == key)
+      if (curr->key == key)
         break;
       curr = curr->next;
     } while (curr != list->head);
@@ -441,7 +449,7 @@ void printLinkedList(LinkedList *list, int direction)
     printf("(head)");
     for (Node *curr = list->head; curr != NULL; curr = curr->next)
     {
-      printf("%d%s", curr->data, curr->next == NULL ? "(tail)\n" : "->");
+      printf("%d%s", curr->key, curr->next == NULL ? "(tail)\n" : "->");
     }
     break;
 
@@ -468,7 +476,7 @@ void printForward(Node *head)
   printf("Forward: ");
   do
   {
-    printf("%d <-> ", curr->data);
+    printf("%d <-> ", curr->key);
     curr = curr->next;
   } while (curr != head);
   printf("(head)\n");
@@ -492,7 +500,7 @@ void printBackward(Node *head)
   printf("Backward: ");
   do
   {
-    printf("%d <-> ", curr->data);
+    printf("%d <-> ", curr->key);
     curr = curr->prev;
   } while (curr != last);
   printf("(tail)\n");
