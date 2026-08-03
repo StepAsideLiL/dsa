@@ -64,6 +64,7 @@ typedef struct LinkedList
    * 2 - Doubly Linked List.
    * 3 - Circular Singly Linked List.
    * 4 - Circular Doubly Linked List.
+   * 5 - Circular Doubly Linked List with Sentinel.
    */
   int type;
 } LinkedList;
@@ -78,7 +79,7 @@ typedef struct LinkedList
  */
 LinkedList *createList(int type)
 {
-  if (type >= 1 && type <= 4)
+  if (type >= 1 && type <= 5)
   {
     LinkedList *list = (LinkedList *)malloc(sizeof(LinkedList));
 
@@ -177,6 +178,10 @@ void insertInEmpty(LinkedList *list, int key)
     node->next = node;
     node->prev = node;
     break;
+  case 5:
+    node->next = node;
+    node->prev = node;
+    break;
   default:
     printf("[insertInEmpty]: Type %d does not exists.\n\n", list->type);
     break;
@@ -226,6 +231,12 @@ void insertAtHead(LinkedList *list, int key)
     last->next = node;
     head->prev = node;
     break;
+  case 5:
+    node->next = head;
+    node->prev = last;
+    last->next = node;
+    head->prev = node;
+    break;
   default:
     printf("[insertAtHead]: Type %d does not exists.\n\n", list->type);
     break;
@@ -270,6 +281,12 @@ void insertAtTail(LinkedList *list, int key)
     node->next = head;
     break;
   case 4:
+    node->next = head;
+    node->prev = last;
+    last->next = node;
+    head->prev = node;
+    break;
+  case 5:
     node->next = head;
     node->prev = last;
     last->next = node;
