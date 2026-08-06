@@ -37,6 +37,14 @@ int multiplicationHash(int k, int m)
   return floor(m * (Ak - floor(Ak)));
 }
 
+int multiplyShiftHash(int k, int m)
+{
+  int l = 14;
+  int d = 32 - l;
+
+  return 0;
+}
+
 /**
  * @brief Clear the terminal.
  */
@@ -56,8 +64,9 @@ int main()
   clearScreen();
   printf("Hash Functions\n");
   printf("=================\n");
-  printf("1. Division\n");
-  printf("2. Multiplication\n");
+  printf("1. Division hash\n");
+  printf("2. Multiplication hash\n");
+  printf("2. Multiply-shift hash\n");
   printf("Enter option: ");
   scanf("%d", &inputValue);
 
@@ -86,14 +95,20 @@ int main()
     }
     printf("============================\n");
     break;
+  case 3:
+    printf("Multiply-shift Hash Function\n");
+    printf("============================\n");
+    printf("| %-11s | %-10s |\n", "key", "hash");
+    printf("============================\n");
+    for (int i = 0; i < 10; i++)
+    {
+      printf("| %11d | %10d |\n", keys[i], multiplyShiftHash(keys[i], tableSize));
+    }
+    printf("============================\n");
+    break;
 
   default:
     break;
   }
-
-  // int m = 12;
-  // int k = 12;
-
-  // printf("%d\n", k % m);
-  // return 0;
+  return 0;
 }
