@@ -209,7 +209,7 @@ void insertAtHead(LinkedList *list, int key)
   }
 
   Node *head = list->head;
-  Node *last = list->tail;
+  Node *tail = list->tail;
   Node *node = createNode(key);
 
   switch (list->type)
@@ -223,18 +223,18 @@ void insertAtHead(LinkedList *list, int key)
     break;
   case 3:
     node->next = head;
-    last->next = node;
+    tail->next = node;
     break;
   case 4:
     node->next = head;
-    node->prev = last;
-    last->next = node;
+    node->prev = tail;
+    tail->next = node;
     head->prev = node;
     break;
   case 5:
     node->next = head;
-    node->prev = last;
-    last->next = node;
+    node->prev = tail;
+    tail->next = node;
     head->prev = node;
     break;
   default:
@@ -264,32 +264,32 @@ void insertAtTail(LinkedList *list, int key)
   }
 
   Node *head = list->head;
-  Node *last = list->tail;
+  Node *tail = list->tail;
   Node *node = createNode(key);
 
   switch (list->type)
   {
   case 1:
-    last->next = node;
+    tail->next = node;
     break;
   case 2:
-    last->next = node;
-    node->prev = last;
+    tail->next = node;
+    node->prev = tail;
     break;
   case 3:
-    last->next = node;
+    tail->next = node;
     node->next = head;
     break;
   case 4:
     node->next = head;
-    node->prev = last;
-    last->next = node;
+    node->prev = tail;
+    tail->next = node;
     head->prev = node;
     break;
   case 5:
     node->next = head;
-    node->prev = last;
-    last->next = node;
+    node->prev = tail;
+    tail->next = node;
     head->prev = node;
     break;
   default:
@@ -320,6 +320,12 @@ Node *searchListByKey(LinkedList *list, int key)
       curr = curr->next;
     }
     break;
+  case 2:
+    while (curr != NULL && curr->key != key)
+    {
+      curr = curr->next;
+    }
+    break;
   default:
     break;
   }
@@ -328,18 +334,18 @@ Node *searchListByKey(LinkedList *list, int key)
 }
 
 /**
- * @brief Delete node by key.
+ * @brief Delete node.
  *
  * This function deletes a node by key from singly linked list.
  *
  * @param list Pointer of the list.
  * @param key Node key.
  */
-void deleteSinglyListedListKey(LinkedList *list, int key)
+void deleteSinglyListedListNodeByKey(LinkedList *list, int key)
 {
   if (isEmpty(list))
   {
-    printf("[deleteSinglyListedListKey]: List is empty!\n");
+    printf("[deleteSinglyListedListNodeByKey]: List is empty!\n");
     return;
   }
 
@@ -354,14 +360,14 @@ void deleteSinglyListedListKey(LinkedList *list, int key)
 
   if (curr == NULL || curr->key != key)
   {
-    printf("[deleteSinglyListedListKey]: Linked list does not contain %d!\n", key);
+    printf("[deleteSinglyListedListNodeByKey]: Linked list does not contain %d!\n", key);
     return;
   }
 
   // Case 1: List contains only head node.
   if (list->head->next == NULL && curr->key == key)
   {
-    printf("[deleteSinglyListedListKey]: Case 1 applyed\n");
+    printf("[deleteSinglyListedListNodeByKey]: Case 1 applyed\n");
     list->head = NULL;
     list->tail = NULL;
     free(curr);
@@ -372,7 +378,7 @@ void deleteSinglyListedListKey(LinkedList *list, int key)
   // Case 2: Key is in the head node.
   if (list->head == curr && curr->key == key)
   {
-    printf("[deleteSinglyListedListKey]: Case 2 applyed\n");
+    printf("[deleteSinglyListedListNodeByKey]: Case 2 applyed\n");
     list->head = curr->next;
     curr->next = NULL;
     free(curr);
@@ -383,7 +389,7 @@ void deleteSinglyListedListKey(LinkedList *list, int key)
   // Case 3: Key is in the tail node.
   if (list->tail == curr && curr->key == key)
   {
-    printf("[deleteSinglyListedListKey]: Case 3 applyed\n");
+    printf("[deleteSinglyListedListNodeByKey]: Case 3 applyed\n");
     prev->next = NULL;
     list->tail = prev;
     free(curr);
@@ -392,10 +398,81 @@ void deleteSinglyListedListKey(LinkedList *list, int key)
   }
 
   // Case 4: Key is somewhere in the middle.
-  printf("[deleteSinglyListedListKey]: Case 4 applyed\n");
+  printf("[deleteSinglyListedListNodeByKey]: Case 4 applyed\n");
   prev->next = curr->next;
   free(curr);
   list->size--;
+}
+
+/**
+ * @brief Delete node.
+ *
+ * This function deletes a node by targeting a key from doubly linked list.
+ *
+ * @param list Pointer of the list.
+ * @param key Node key.
+ */
+void deleteDoublyLinkedListNodeByKey(LinkedList *list, int key)
+{
+  if (isEmpty(list))
+  {
+    printf("[deleteDoublyLinkedListNodeByKey]: List is empty!\n");
+    return;
+  }
+
+  Node *curr = list->head;
+
+  while (curr != NULL && curr->key != key)
+  {
+    curr = curr->next;
+  }
+
+  if (curr == NULL || curr->key != key)
+  {
+    printf("[deleteDoublyLinkedListNodeByKey]: Linked list does not contain %d!\n", key);
+    return;
+  }
+
+  // Case 1: For only head node.
+  if (list->head->next == NULL && curr->key == key)
+  {
+    printf("[deleteDoublyLinkedListNodeByKey]: Case 1 applyed\n");
+    list->head = NULL;
+    list->tail = NULL;
+    free(curr);
+    list->size--;
+    return;
+  }
+
+  // Case 2: key in head node.
+  if (list->head == curr && curr->key == key)
+  {
+    printf("[deleteDoublyLinkedListNodeByKey]: Case 2 applyed\n");
+    curr->next->prev = curr->prev;
+    list->head = curr->next;
+    free(curr);
+    list->size--;
+    return;
+  }
+
+  // Case 3: key in tail node.
+  if (list->tail == curr && curr->key == key)
+  {
+    printf("[deleteDoublyLinkedListNodeByKey]: Case 3 applyed\n");
+    curr->prev->next = curr->next;
+    list->tail = curr->prev;
+    free(curr);
+    list->size--;
+    return;
+  }
+
+  // Case 4: key in middle node.
+  printf("[deleteDoublyLinkedListNodeByKey]: Case 4 applyed\n");
+  curr->next->prev = curr->prev;
+  curr->prev->next = curr->next;
+  free(curr);
+  list->size--;
+  return;
 }
 
 /**
@@ -406,7 +483,7 @@ void deleteSinglyListedListKey(LinkedList *list, int key)
  * @param list Pointer of the list.
  * @param key Node key.
  */
-void deleteValue(LinkedList *list, int key)
+void deleteNodeByKey(LinkedList *list, int key)
 {
   if (isEmpty(list))
   {
@@ -420,10 +497,10 @@ void deleteValue(LinkedList *list, int key)
   switch (list->type)
   {
   case 1:
-    deleteSinglyListedListKey(list, key);
+    deleteSinglyListedListNodeByKey(list, key);
     break;
   case 2:
-    //
+    deleteDoublyLinkedListNodeByKey(list, key);
     break;
   case 3:
     //
@@ -492,6 +569,13 @@ void printLinkedList(LinkedList *list, int direction)
     for (Node *curr = list->head; curr != NULL; curr = curr->next)
     {
       printf("%d%s", curr->key, curr->next == NULL ? "(tail)\n" : "->");
+    }
+    break;
+  case 2:
+    printf("(head)");
+    for (Node *curr = list->head; curr != NULL; curr = curr->next)
+    {
+      printf("%d%s", curr->key, curr->next == NULL ? "(tail)\n" : "<->");
     }
     break;
 
@@ -601,13 +685,13 @@ void pressEnterToContinue()
 
 int main()
 {
-  bool running = false;
-  char choice;
-  int operation;
-  int inputValue;
+  // bool running = false;
+  // char choice;
+  // int operation;
+  // int inputValue;
 
-  LinkedList *list = createList(1);
-  int linkedListType;
+  LinkedList *list = createList(2);
+  // int linkedListType;
 
   clearScreen();
 
@@ -632,14 +716,14 @@ int main()
 
   printf("\n=== Delete ===\n\n");
 
-  deleteSinglyListedListKey(list, 50);
+  deleteNodeByKey(list, 50);
   printLinkedList(list, 1);
-  deleteSinglyListedListKey(list, 32);
+  deleteNodeByKey(list, 32);
   printLinkedList(list, 1);
 
   for (int k = 1; k <= 50; k++)
   {
-    deleteSinglyListedListKey(list, k);
+    deleteNodeByKey(list, k);
     printLinkedList(list, 1);
   }
 
